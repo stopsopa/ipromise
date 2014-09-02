@@ -196,7 +196,8 @@
             if (state == _.PENDING) { // must not transition to any other state. - http://promisesaplus.com/#point-15             
                 state     = _.RESOLVED;
                 argscache = aconv(arguments);
-                callList(stack, _.DONE);
+                callList(stack, _.DONE);  
+                delete stack; // i don't need stack anymore
             }
             return this;                           
         };
@@ -205,6 +206,7 @@
                 state     = _.REJECTED;
                 argscache = aconv(arguments);
                 callList(stack, _.FAIL);  
+                delete stack; // i don't need stack anymore
             }
             return this;             
         };
