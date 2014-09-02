@@ -17,8 +17,11 @@
     context[name] = definition;
     
 })('ipromise', this, (function (_, un) {
+    
+    // statuses
     for (var i in _) _[_[i]] = i;
 
+    // tools
     function aconv(a) {
         return Array.prototype.slice.call( a, 0 );
     };
@@ -185,7 +188,7 @@
         this.always = function () {
             if (state & _.PENDING) 
                 addStack(stack, arguments, _.DONE | _.FAIL)             
-            else if (state & (_.RESOLVED | _.REJECTED)) 
+            else // if (state & (_.RESOLVED | _.REJECTED)) 
                 callList(flat(arguments))
             return this;
         };
