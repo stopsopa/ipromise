@@ -1,3 +1,5 @@
+function log(l) {try{console.log(l)}catch(e){}};
+
 var promise = (function (_, un) {
 
     for (var i in _) _[_[i]] = i;
@@ -43,6 +45,74 @@ var promise = (function (_, un) {
             });
         }
     }
+    function _resolve(promise, x) {
+        var then, call = true;
+        
+        try {
+            if (promise === x) // If promise and x refer to the same object, reject promise with a TypeError as the reason. - http://promisesaplus.com/#point-48
+                throw new TypeError('promise and x are the same object'); // If promise and x refer to the same object, reject promise with a TypeError as the reason. - http://promisesaplus.com/#point-48
+          
+//            if (x instanceof deferred) { // If x is a promise, adopt its state [3.4]: - http://promisesaplus.com/#point-49            
+//                switch (x.state()) {
+//                    case 'pending':
+//                        promise.lock(true); // If x is pending, promise must remain pending until x is fulfilled or rejected. - http://promisesaplus.com/#point-50
+//                        x.always(function () {
+//                            promise.lock(false);
+//                        })
+//                        .done(function () { // If/when x is fulfilled, fulfill promise with the same value. - http://promisesaplus.com/#point-51
+//                            promise.resolve.apply(un, arguments);
+//                        })
+//                        .fail(function () { // If/when x is rejected, reject promise with the same reason. - http://promisesaplus.com/#point-52
+//                            promise.reject.apply(un, arguments);
+//                        });
+//                        break;
+//                    case 'resolved':
+//                        x.done(function () { // If/when x is fulfilled, fulfill promise with the same value. - http://promisesaplus.com/#point-51
+//                            promise.resolve.apply(un, arguments);
+//                        });
+//                        break;
+//                    case 'rejected':
+//                        x.fail(function () { // If/when x is rejected, reject promise with the same reason. - http://promisesaplus.com/#point-52
+//                            promise.reject.apply(un, arguments);
+//                        });
+//                        break;
+//                }
+//            }
+//            else 
+            if (isObject(x) || isFunction(x)) {
+                    then = x.then;
+                    if (isFunction(then)) {
+                        try {
+                            then.call(x, function (y) {
+                                if (call) {
+                                    _resolve(promise, y);
+                                    call = false;
+                                }
+                            }, function (r) {
+                                if (call) {
+                                    promise.reject(r);
+                                    call = false;
+                                }
+                            });                         
+                        }
+                        catch (e) {
+                            if (call) {
+                                promise.reject(e);
+                            }                         
+                        }                    
+                    } 
+                    else {
+                        promise.resolve(x);
+                    }
+            }
+            else {
+                promise.resolve(x);
+            }               
+        }
+        catch (e) {
+            promise.reject(e);
+        }
+    }
     return function deferred() {             
         var state = _.PENDING; // pending, resolved, or rejected // A promise must be in one of three states: pending, fulfilled, or rejected. - http://promisesaplus.com/#point-11
         var argscache, // must have a value, which must not change. - http://promisesaplus.com/#point-16 / must have a reason, which must not change. - http://promisesaplus.com/#point-19
@@ -51,74 +121,21 @@ var promise = (function (_, un) {
             lock = false;
 
         function call(fn, x) {
-            if (fn.promise) {
-                setTimeout(function () { // onFulfilled or onRejected must not be called until the execution context stack contains only platform code. [3.1]. - http://promisesaplus.com/#point-34
+            setTimeout(function () { // onFulfilled or onRejected must not be called until the execution context stack contains only platform code. [3.1]. - http://promisesaplus.com/#point-34
+                if (fn.promise) {
                     try {
                         // If either onFulfilled or onRejected returns a value x, run the Promise Resolution Procedure [[Resolve]](promise2, x) - http://promisesaplus.com/#point-41
                         // it must be called after promise is fulfilled, with promise’s value as its first argument. - http://promisesaplus.com/#point-27 and http://promisesaplus.com/#point-31                                    
                         var x = fn.apply(un, argscache);
-
-                        if (fn.promise === x) // If promise and x refer to the same object, reject promise with a TypeError as the reason. - http://promisesaplus.com/#point-48
-                            throw new TypeError('promise and x are the same object'); // If promise and x refer to the same object, reject promise with a TypeError as the reason. - http://promisesaplus.com/#point-48
-//                                    
-//                        if (x instanceof deferred) { // If x is a promise, adopt its state [3.4]: - http://promisesaplus.com/#point-49
-//                            if (x.state() == 'pending') {
-//                                fn.promise.lock(true); // If x is pending, promise must remain pending until x is fulfilled or rejected. - http://promisesaplus.com/#point-50
-//                                return x.always(function () {
-//                                    fn.promise.lock(false);
-//                                })
-//                                .done(function () { // If/when x is fulfilled, fulfill promise with the same value. - http://promisesaplus.com/#point-51
-//                                    fn.promise.resolve.apply(un, arguments);
-//                                })
-//                                .fail(function () { // If/when x is rejected, reject promise with the same reason. - http://promisesaplus.com/#point-52
-//                                    fn.promise.reject.apply(un, arguments);
-//                                });
-//                            }
-//                            if (x.state() == 'resolved') {
-//                                return x.done(function () { // If/when x is fulfilled, fulfill promise with the same value. - http://promisesaplus.com/#point-51
-//                                    fn.promise.resolve.apply(un, arguments);
-//                                });
-//                            }
-//                            if (x.state() == 'rejected') {
-//                                return x.fail(function () { // If/when x is rejected, reject promise with the same reason. - http://promisesaplus.com/#point-52
-//                                    fn.promise.reject.apply(un, arguments);
-//                                });
-//                            }
-//                        }
-//                        else 
-                            if (isFunction(x) || isObject(x)) {
-                            var once = 1;
-                            try {
-                                var then = x.then;
-                                if (isFunction(then)) {
-                                    if (x === fn.promise) {
-                                        throw new TypeError("Promise can't resolve itself");
-                                    }
-                                    return then.call(x, function (y) {
-                                        if (once--) {
-                                            fn.promise.resolve(y);
-                                        }
-                                    }, function (r) {
-                                        if (once--) {
-                                            fn.promise.reject(r);
-                                        }
-                                    });                                                
-                                }
-                            }
-                            catch (e) {
-                               if (once--) fn.promise.reject(e); 
-                            }
-                        }
-
-                        fn.promise.resolve(x); // onFulfilled and onRejected must be called as functions (i.e. with no this value). [3.2] - http://promisesaplus.com/#point-35
+                        _resolve(fn.promise, x);
                     }
                     catch (e) { // http://promisesaplus.com/#point-48                                    
                         fn.promise.reject(e); // If either onFulfilled or onRejected throws an exception e, promise2 must be rejected with e as the reason. - http://promisesaplus.com/#point-42
                     }
-                }, 0);
-                return;
-            }
-            setTimeout(function () {fn.apply(un, argscache);}, 0); // onFulfilled or onRejected must not be called until the execution context stack contains only platform code. [3.1]. - http://promisesaplus.com/#point-34
+                    return;
+                }
+                fn.apply(un, argscache);
+            }, 0);
         }
 
         this.done = function () {
@@ -232,6 +249,7 @@ var promise = (function (_, un) {
 
 
 var promisesAplusTests = require('promises-aplus-tests');
+
 
 exports.deferred = function (){
     var d = new promise();
