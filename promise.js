@@ -90,22 +90,28 @@ var promise = (function (_, un) {
                             try {
                                 var then = x.then;
                                 if (isFunction(then)) {
-                                    if (x === fn.promise) {
-                                        throw new TypeError("Promise can't resolve itself");
-                                    }
+//                                    if (x === fn.promise) {
+//                                        throw new TypeError("Promise can't resolve itself");
+//                                    }
                                     return then.call(x, function (y) {
-                                        if (once--) {
+                                        if (once) {
+                                            --once;
                                             fn.promise.resolve(y);
                                         }
                                     }, function (r) {
-                                        if (once--) {
+                                        if (once) {
+                                            --once;
                                             fn.promise.reject(r);
                                         }
                                     });                                                
                                 }
                             }
                             catch (e) {
-                               if (once--) fn.promise.reject(e); 
+                               if (once) {
+                                   --once;
+                                   fn.promise.reject(e);
+                               } 
+                               return;
                             }
                         }
 
