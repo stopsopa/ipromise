@@ -1,10 +1,11 @@
 
-***
+
 <a href="http://promisesaplus.com/" style="z-index: 100;">
     <img src="http://promisesaplus.com/assets/logo-small.png" alt="Promises/A+ logo"
          title="Promises/A+ 1.1 compliant" align="right" />
 </a>
-> ipromise.js 2.2.2
+
+ipromise.js 2.2.2
 ====================
 
 
