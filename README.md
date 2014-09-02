@@ -5,6 +5,7 @@
          title="Promises/A+ 1.1 compliant" align="right" />
 </a>
 > ipromise.js 2.2.2
+====================
 
 
 ***
