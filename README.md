@@ -1,16 +1,13 @@
 
-***
-[![Promises/A+ 1.0 compliant][A+logo]][A+]
 
+<a href="http://promises-aplus.github.com/promises-spec"><img src="https://promises-aplus.github.com/promises-spec/assets/logo-small.png" alt="Promises/A+ logo" align="right"></a>
 
 
 # ipromise.js 
 
 Standalone, lightweight and multiplatform javascript implementatnion of 
-[Promises/A+][A+] design pattern (ready to use in browser and in node.js)
+[Promises/A+](http://promises-aplus.github.com/promises-spec) design pattern (ready to use in browser and in node.js)
 
- [A+]: http://promises-aplus.github.com/promises-spec
- [A+logo]: http://promises-aplus.github.com/promises-spec/assets/logo-small.png
 
 ***
 
@@ -61,7 +58,7 @@ promise.resolve(arg1, arg2, ...)
 ```
 
 
-if you want o to feject promise:
+if you want o to reject promise:
 
 
 ```javascript
