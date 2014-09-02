@@ -56,7 +56,7 @@
             if (isFunction(e))  // If onFulfilled is not a function, it must be ignored. - http://promisesaplus.com/#point-24 / onRejected is not a function, it must be ignored. - http://promisesaplus.com/#point-25
                 list.push(e);                                    
             else if (isArray(e)) 
-                flat(list, e);            
+                flatTool(list, e);            
         }
         return list;
     };
