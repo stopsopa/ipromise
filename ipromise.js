@@ -2,6 +2,7 @@
  * @author Szymon Działowski
  * @ver 1.0 - 2014-09-02
  * @homepage https://github.com/stopsopa/ipromise
+ * 
  * Copyright (c) 2014 Szymon Działowski
  * Released under the MIT license
  * http://en.wikipedia.org/wiki/MIT_License

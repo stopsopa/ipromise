@@ -1,17 +1,16 @@
 
 ***
+[![Promises/A+ 1.0 compliant][A+logo]][A+]
 
 
 
-
-<a href="http://promisesaplus.com/">
-    <img src="http://promisesaplus.com/assets/logo-small.png" alt="Promises/A+ logo"
-         title="Promises/A+ 1.1 compliant" align="right" />
-</a>
 # ipromise.js 
 
 Standalone, lightweight and multiplatform javascript implementatnion of 
-Promise/A+ design pattern (ready to use in browser and in node.js)
+[Promises/A+][A+] design pattern (ready to use in browser and in node.js)
+
+ [A+]: http://promises-aplus.github.com/promises-spec
+ [A+logo]: http://promises-aplus.github.com/promises-spec/assets/logo-small.png
 
 ***
 
