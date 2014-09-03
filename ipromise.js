@@ -129,23 +129,13 @@
         }
 
         this.done = function () {
-            switch (state) {
-                case _.PENDING:
-                    _stack(stack, arguments, _.DONE) // it must not be called before promise is fulfilled. - http://promisesaplus.com/#point-28
-                    break;
-                case _.RESOLVED:
-                    _calllist(_flat(arguments))
-            }
+            (state == _.PENDING)  && _stack(stack, arguments, _.DONE); // it must not be called before promise is fulfilled. - http://promisesaplus.com/#point-28
+            (state == _.RESOLVED) && _calllist(_flat(arguments));
             return this;
         };
         this.fail = function () {
-            switch (state) {
-                case _.PENDING: 
-                    _stack(stack, arguments, _.FAIL) // it must not be called before promise is rejected. - http://promisesaplus.com/#point-32    
-                    break;
-                case _.REJECTED:
-                    _calllist(_flat(arguments))
-            }
+            (state == _.PENDING)  && _stack(stack, arguments, _.FAIL); // it must not be called before promise is rejected. - http://promisesaplus.com/#point-32    
+            (state == _.REJECTED) && _calllist(_flat(arguments));
             return this;
         };
         // A promise must provide a then method to access its current or eventual value or reason. - http://promisesaplus.com/#point-21
