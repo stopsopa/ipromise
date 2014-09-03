@@ -36,17 +36,9 @@
     };   
 
     var _tick = (function () {
-        try {
-            return process.nextTick;
-        } catch (e) {}
-
-        try {        
-            return setImmediate;
-        } catch (e) {}
-
-        return function (f) {
-            setTimeout(f, 0);
-        };    
+        try { return process.nextTick; } catch (e) {}
+        try { return setImmediate;     } catch (e) {}
+        return function (f) { setTimeout(f, 0); };    
     })();
 
     function _flatcycle(list, args) {
@@ -68,16 +60,15 @@
             stack.push(a[i]);
         }
     };
-    function _resolve(promise, x) {
-        var then, call = true;
-
+    function _resolve(promise, x) {        
         try {
             if (promise === x) // If promise and x refer to the same object, reject promise with a TypeError as the reason. - http://promisesaplus.com/#point-48
                 throw new TypeError('promise and x are the same object'); // If promise and x refer to the same object, reject promise with a TypeError as the reason. - http://promisesaplus.com/#point-48
 
             if (isObject(x) || isFunction(x)) {
-                    then = x.then;
+                    var then = x.then;
                     if (isFunction(then)) {
+                        var call = true;
                         try {
                             then.call(x, function (y) {
                                 if (call) {
@@ -92,9 +83,7 @@
                             });                         
                         }
                         catch (e) {
-                            if (call) {
-                                promise.reject(e);
-                            }                         
+                            call && promise.reject(e);
                         }                    
                     } 
                     else {
@@ -135,14 +124,8 @@
             });
         }
         function _calllist(l, s) {
-            for (var i = 0 ; i < l.length ; ++i ) {
-                if (s) {
-                    (l[i].status & s) && _call(l[i])                                        
-                }
-                else {
-                    _call(l[i])                    
-                }
-            }
+            for (var i = 0 ; i < l.length ; ++i ) 
+                s ? ( (l[i].status & s) && _call(l[i]) ) : _call(l[i])            
         }
 
         this.done = function () {
@@ -152,7 +135,6 @@
                     break;
                 case _.RESOLVED:
                     _calllist(_flat(arguments))
-                    break;
             }
             return this;
         };
@@ -163,7 +145,6 @@
                     break;
                 case _.REJECTED:
                     _calllist(_flat(arguments))
-                    break;
             }
             return this;
         };
