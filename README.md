@@ -78,6 +78,13 @@ var promise2 = promise.then(
 
 ```
 
+## Thanks
+
+Thanks for e-mail consultations
+
+- [briancavalier](https://github.com/briancavalier)
+- [kevinconway](https://github.com/kevinconway)
+
 
 ### License
 

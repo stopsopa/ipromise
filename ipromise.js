@@ -22,7 +22,7 @@
     for (var i in _) _[_[i]] = i;
 
     // tools
-    function aconv(a) {
+    function _aconv(a) {
         return Array.prototype.slice.call( a, 0 );
     };
     function isArray (a) {
@@ -35,7 +35,7 @@
         return toString.call(a) == '[object Function]';
     };   
 
-    var tick = (function () {
+    var _tick = (function () {
         try {
             return process.nextTick;
         } catch (e) {}
@@ -49,20 +49,20 @@
         };    
     })();
 
-    function flatTool(list, args) {
+    function _flatcycle(list, args) {
         var e;
         for (var i = 0 ; i < args.length ; ++i ) {
             e = args[i];
             if (isFunction(e))  // If onFulfilled is not a function, it must be ignored. - http://promisesaplus.com/#point-24 / onRejected is not a function, it must be ignored. - http://promisesaplus.com/#point-25
                 list.push(e);                                    
             else if (isArray(e)) 
-                flatTool(list, e);            
+                _flatcycle(list, e);            
         }
         return list;
     };
-    function flat(args) { return flatTool([], aconv(args)); };
-    function addStack(stack, args, status) {
-        var a = flat(args);
+    function _flat(args) { return _flatcycle([], _aconv(args)); };
+    function _stack(stack, args, status) {
+        var a = _flat(args);
         for (var i = 0 ; i < a.length ; ++i ) {
             a[i].status = status;
             stack.push(a[i]);
@@ -115,7 +115,7 @@
             stack = [];
 
         function call(fn, x) {
-            tick(function () { // onFulfilled or onRejected must not be called until the execution context stack contains only platform code. [3.1]. - http://promisesaplus.com/#point-34
+            _tick(function () { // onFulfilled or onRejected must not be called until the execution context stack contains only platform code. [3.1]. - http://promisesaplus.com/#point-34
                 if (fn.promise) {
                     try {
                         // If either onFulfilled or onRejected returns a value x, run the Promise Resolution Procedure [[Resolve]](promise2, x) - http://promisesaplus.com/#point-41
@@ -130,7 +130,7 @@
                 fn.apply(un, argscache);
             });
         }
-        function callList(l, s) {
+        function _calllist(l, s) {
             for (var i = 0 ; i < l.length ; ++i ) {
                 if (s) {
                     (l[i].status & s) && call(l[i])                                        
@@ -144,10 +144,10 @@
         this.done = function () {
             switch (state) {
                 case _.PENDING:
-                    addStack(stack, arguments, _.DONE) // it must not be called before promise is fulfilled. - http://promisesaplus.com/#point-28
+                    _stack(stack, arguments, _.DONE) // it must not be called before promise is fulfilled. - http://promisesaplus.com/#point-28
                     break;
                 case _.RESOLVED:
-                    callList(flat(arguments))
+                    _calllist(_flat(arguments))
                     break;
             }
             return this;
@@ -155,10 +155,10 @@
         this.fail = function () {
             switch (state) {
                 case _.PENDING: 
-                    addStack(stack, arguments, _.FAIL) // it must not be called before promise is rejected. - http://promisesaplus.com/#point-32    
+                    _stack(stack, arguments, _.FAIL) // it must not be called before promise is rejected. - http://promisesaplus.com/#point-32    
                     break;
                 case _.REJECTED:
-                    callList(flat(arguments))
+                    _calllist(_flat(arguments))
                     break;
             }
             return this;
@@ -186,17 +186,17 @@
             return prms; // then must return a promise - http://promisesaplus.com/#point-40
         }
         this.always = function () {
-            if (state & _.PENDING) 
-                addStack(stack, arguments, _.DONE | _.FAIL)             
+            if (state == _.PENDING) 
+                _stack(stack, arguments, _.DONE | _.FAIL)             
             else // if (state & (_.RESOLVED | _.REJECTED)) 
-                callList(flat(arguments))
+                _calllist(_flat(arguments))
             return this;
         };
         this.resolve = function () { // When pending, a promise: may transition to either the fulfilled or rejected state. - http://promisesaplus.com/#point-12  
             if (state == _.PENDING) { // must not transition to any other state. - http://promisesaplus.com/#point-15             
                 state     = _.RESOLVED;
-                argscache = aconv(arguments);
-                callList(stack, _.DONE);  
+                argscache = _aconv(arguments);
+                _calllist(stack, _.DONE);  
                 delete stack; // i don't need stack anymore
             }
             return this;                           
@@ -204,8 +204,8 @@
         this.reject = function () { // When pending, a promise: may transition to either the fulfilled or rejected state. - http://promisesaplus.com/#point-12 
             if (state == _.PENDING) { // must not transition to any other state. - http://promisesaplus.com/#point-18                  
                 state     = _.REJECTED;
-                argscache = aconv(arguments);
-                callList(stack, _.FAIL);  
+                argscache = _aconv(arguments);
+                _calllist(stack, _.FAIL);  
                 delete stack; // i don't need stack anymore
             }
             return this;             
