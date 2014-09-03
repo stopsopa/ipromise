@@ -118,7 +118,7 @@
         var argscache, // must have a value, which must not change. - http://promisesaplus.com/#point-16 / must have a reason, which must not change. - http://promisesaplus.com/#point-19
             stack = [];
 
-        function call(fn, x) {
+        function _call(fn) {
             _tick(function () { // onFulfilled or onRejected must not be called until the execution context stack contains only platform code. [3.1]. - http://promisesaplus.com/#point-34
                 if (fn.promise) {
                     try {
@@ -137,10 +137,10 @@
         function _calllist(l, s) {
             for (var i = 0 ; i < l.length ; ++i ) {
                 if (s) {
-                    (l[i].status & s) && call(l[i])                                        
+                    (l[i].status & s) && _call(l[i])                                        
                 }
                 else {
-                    call(l[i])                    
+                    _call(l[i])                    
                 }
             }
         }
