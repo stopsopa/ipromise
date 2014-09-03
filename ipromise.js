@@ -2,6 +2,7 @@
  * @author Szymon Działowski
  * @ver 1.0 - 2014-09-02
  * @homepage https://github.com/stopsopa/ipromise
+ * @spec http://promisesaplus.com/
  * 
  * Copyright (c) 2014 Szymon Działowski
  * Released under the MIT license
@@ -16,7 +17,7 @@
     
     context[name] = definition;
     
-})('ipromise', this, (function (_, un) {
+})('ipromise', this, (function (_, u) {
     
     // statuses
     for (var i in _) _[_[i]] = i;
@@ -41,18 +42,18 @@
         return function (f) { setTimeout(f, 0); };    
     })();
 
-    function _flatcycle(list, args) {
+    function _flatcycle(l, a) {
         var e;
-        for (var i = 0 ; i < args.length ; ++i ) {
-            e = args[i];
+        for (var i = 0 ; i < a.length ; ++i ) {
+            e = a[i];
             if (isFunction(e))  // If onFulfilled is not a function, it must be ignored. - http://promisesaplus.com/#point-24 / onRejected is not a function, it must be ignored. - http://promisesaplus.com/#point-25
-                list.push(e);                                    
+                l.push(e);                                    
             else if (isArray(e)) 
-                _flatcycle(list, e);            
+                _flatcycle(l, e);            
         }
-        return list;
+        return l;
     };
-    function _flat(args) { return _flatcycle([], _aconv(args)); };
+    function _flat(a) { return _flatcycle([], _aconv(a)); };
     function _stack(stack, args, status) {
         var a = _flat(args);
         for (var i = 0 ; i < a.length ; ++i ) {
@@ -60,7 +61,7 @@
             stack.push(a[i]);
         }
     };
-    function _resolve(promise, x) {        
+    function _resolve(promise, x) {  // logic from http://promisesaplus.com/#point-65      
         try {
             if (promise === x) // If promise and x refer to the same object, reject promise with a TypeError as the reason. - http://promisesaplus.com/#point-48
                 throw new TypeError('promise and x are the same object'); // If promise and x refer to the same object, reject promise with a TypeError as the reason. - http://promisesaplus.com/#point-48
@@ -107,35 +108,35 @@
         var argscache, // must have a value, which must not change. - http://promisesaplus.com/#point-16 / must have a reason, which must not change. - http://promisesaplus.com/#point-19
             stack = [];
 
-        function _call(fn) {
+        function _trigger(fn) {
             _tick(function () { // onFulfilled or onRejected must not be called until the execution context stack contains only platform code. [3.1]. - http://promisesaplus.com/#point-34
                 if (fn.promise) {
                     try {
                         // If either onFulfilled or onRejected returns a value x, run the Promise Resolution Procedure [[Resolve]](promise2, x) - http://promisesaplus.com/#point-41
                         // it must be called after promise is fulfilled, with promise’s value as its first argument. - http://promisesaplus.com/#point-27 and http://promisesaplus.com/#point-31                                                            
-                        _resolve(fn.promise, fn.apply(un, argscache));
+                        _resolve(fn.promise, fn.apply(u, argscache));
                     }
                     catch (e) { // http://promisesaplus.com/#point-48                                    
                         fn.promise.reject(e); // If either onFulfilled or onRejected throws an exception e, promise2 must be rejected with e as the reason. - http://promisesaplus.com/#point-42
                     }
                     return;
                 }
-                fn.apply(un, argscache);
+                fn.apply(u, argscache);
             });
         }
-        function _calllist(l, s) {
+        function _triggerstack(l, s) {
             for (var i = 0 ; i < l.length ; ++i ) 
-                s ? ( (l[i].status & s) && _call(l[i]) ) : _call(l[i])            
+                s ? ( (l[i].status & s) && _trigger(l[i]) ) : _trigger(l[i])            
         }
 
         this.done = function () {
             (state == _.PENDING)  && _stack(stack, arguments, _.DONE); // it must not be called before promise is fulfilled. - http://promisesaplus.com/#point-28
-            (state == _.RESOLVED) && _calllist(_flat(arguments));
+            (state == _.RESOLVED) && _triggerstack(_flat(arguments));
             return this;
         };
         this.fail = function () {
             (state == _.PENDING)  && _stack(stack, arguments, _.FAIL); // it must not be called before promise is rejected. - http://promisesaplus.com/#point-32    
-            (state == _.REJECTED) && _calllist(_flat(arguments));
+            (state == _.REJECTED) && _triggerstack(_flat(arguments));
             return this;
         };
         // A promise must provide a then method to access its current or eventual value or reason. - http://promisesaplus.com/#point-21
@@ -145,11 +146,11 @@
 
             // Both onFulfilled and onRejected are optional arguments: - http://promisesaplus.com/#point-23
             isFunction(onFulfilled) || (onFulfilled = function () { // If onFulfilled is not a function and promise1 is fulfilled, promise2 must be fulfilled with the same value as promise1. - http://promisesaplus.com/#point-43
-                prms.resolve.apply(un, arguments); 
+                prms.resolve.apply(u, arguments); 
             });
 
             isFunction(onRejected) || (onRejected = function () { // If onRejected is not a function and promise1 is rejected, promise2 must be rejected with the same reason as promise1. - http://promisesaplus.com/#point-44
-                prms.reject.apply(un, arguments); 
+                prms.reject.apply(u, arguments); 
             });
 
             onFulfilled.promise = onRejected.promise = prms; 
@@ -164,14 +165,14 @@
             if (state == _.PENDING) 
                 _stack(stack, arguments, _.DONE | _.FAIL)             
             else // if (state & (_.RESOLVED | _.REJECTED)) 
-                _calllist(_flat(arguments))
+                _triggerstack(_flat(arguments))
             return this;
         };
         this.resolve = function () { // When pending, a promise: may transition to either the fulfilled or rejected state. - http://promisesaplus.com/#point-12  
             if (state == _.PENDING) { // must not transition to any other state. - http://promisesaplus.com/#point-15             
                 state     = _.RESOLVED;
                 argscache = _aconv(arguments);
-                _calllist(stack, _.DONE);  
+                _triggerstack(stack, _.DONE);  
                 delete stack; // i don't need stack anymore
             }
             return this;                           
@@ -180,7 +181,7 @@
             if (state == _.PENDING) { // must not transition to any other state. - http://promisesaplus.com/#point-18                  
                 state     = _.REJECTED;
                 argscache = _aconv(arguments);
-                _calllist(stack, _.FAIL);  
+                _triggerstack(stack, _.FAIL);  
                 delete stack; // i don't need stack anymore
             }
             return this;             
