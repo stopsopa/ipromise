@@ -28,6 +28,12 @@ Creating an object of promise:
 var promise = new ipromise();
 ```
 
+... or ...
+
+```javascript
+var promise = ipromise();
+```
+
 
 Api for end user:
 

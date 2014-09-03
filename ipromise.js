@@ -109,7 +109,11 @@
             promise.reject(e);
         }
     }
-    return function deferred() {             
+    return function deferred() { 
+        
+        if (this.constructor != deferred) 
+            return new deferred();
+                    
         var state = _.PENDING; // pending, resolved, or rejected // A promise must be in one of three states: pending, fulfilled, or rejected. - http://promisesaplus.com/#point-11
         var argscache, // must have a value, which must not change. - http://promisesaplus.com/#point-16 / must have a reason, which must not change. - http://promisesaplus.com/#point-19
             stack = [];
