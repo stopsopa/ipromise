@@ -80,6 +80,7 @@
                 $('.state').click(function () {
                     log('state: '+promise.state()); // Note that a Deferred object can be in one of three states: pending, resolved, or rejected // http://api.jquery.com/deferred.state/ // g(jquery deferred.state())
                 });
+                n *= 0.8;
                 $('.notify').click(function () {
                     promise.notify(   parseFloat(((100 - n)+'').substring(0, 5))   ); // deferred.notifyWith( context [, args ] ) // można też tak wtedy manipulujemy this w wywołanej funkcji
                     n *= 0.8;
