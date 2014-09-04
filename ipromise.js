@@ -33,8 +33,8 @@
     function isObject (a) {
         return toString.call(a) == '[object Object]';
     };
-    function isFunction (a) {
-        return toString.call(a) == '[object Function]';
+    function isFunction (a) { // from underscore.js
+        return typeof a == 'function' || false;
     };   
 
     var _tick = (function () {
