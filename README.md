@@ -49,6 +49,9 @@ promise
     })
     .always(function(fn, fn, fn ,[fn, fn], fn, ...){
         // action on done and on fail
+    })
+    .progress(function(fn, fn, fn ,[fn, fn], fn, ...){
+        // action on progress
     });
 
 ```
@@ -69,6 +72,13 @@ if you want o to reject promise:
 
 ```javascript
 promise.reject(arg1, arg2, ...)
+```
+
+if you want o to trigger progress (trigger only before change state, after change state no more progress events are triggered)
+
+
+```javascript
+promise.notify(arg1, arg2, ...)
 ```
 
 
