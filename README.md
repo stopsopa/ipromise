@@ -19,6 +19,10 @@ To run test install libraries from https://github.com/promises-aplus/promises-te
 
     promises-aplus-tests test.js
 
+## Demo
+
+  [Demo](http://stopsopa.bitbucket.org/demos/ipromise/demo.html)
+
 ## Api
 
 Creating an object of promise:
