@@ -1,8 +1,9 @@
-/**
+/*!
  * @author Szymon Działowski
  * @ver 1.0 - 2014-09-02
  * @homepage https://github.com/stopsopa/ipromise
  * @spec http://promisesaplus.com/
+ * @demo 
  * 
  * Copyright (c) 2014 Szymon Działowski
  * Released under the MIT license
@@ -106,9 +107,10 @@
                     
         var state = _.PENDING; // pending, resolved, or rejected // A promise must be in one of three states: pending, fulfilled, or rejected. - http://promisesaplus.com/#point-11
         var argscache, // must have a value, which must not change. - http://promisesaplus.com/#point-16 / must have a reason, which must not change. - http://promisesaplus.com/#point-19
+            progresscache,
             stack = [];
 
-        function _trigger(fn) {
+        function _trigger(fn, p) {
             _tick(function () { // onFulfilled or onRejected must not be called until the execution context stack contains only platform code. [3.1]. - http://promisesaplus.com/#point-34
                 if (fn.promise) {
                     try {
@@ -121,24 +123,15 @@
                     }
                     return;
                 }
+                if (p) return fn.apply(u, progresscache); // progress mode
+                
                 fn.apply(u, argscache);
             });
         }
-        function _triggerstack(l, s) {
+        function _triggerstack(l, s, p) {
             for (var i = 0 ; i < l.length ; ++i ) 
-                s ? ( (l[i].status & s) && _trigger(l[i]) ) : _trigger(l[i])            
+                s ? ( (l[i].status & s) && _trigger(l[i], p) ) : _trigger(l[i], p)            
         }
-
-        this.done = function () {
-            (state == _.PENDING)  && _stack(stack, arguments, _.DONE); // it must not be called before promise is fulfilled. - http://promisesaplus.com/#point-28
-            (state == _.RESOLVED) && _triggerstack(_flat(arguments));
-            return this;
-        };
-        this.fail = function () {
-            (state == _.PENDING)  && _stack(stack, arguments, _.FAIL); // it must not be called before promise is rejected. - http://promisesaplus.com/#point-32    
-            (state == _.REJECTED) && _triggerstack(_flat(arguments));
-            return this;
-        };
         // A promise must provide a then method to access its current or eventual value or reason. - http://promisesaplus.com/#point-21
         // then may be called multiple times on the same promise. - http://promisesaplus.com/#point-36
         this.then = function (onFulfilled, onRejected) { // A promise’s then method accepts two arguments: - http://promisesaplus.com/#point-22
@@ -161,6 +154,25 @@
 
             return prms; // then must return a promise - http://promisesaplus.com/#point-40
         }
+
+        this.done = function () {
+            (state == _.PENDING)  && _stack(stack, arguments, _.DONE); // it must not be called before promise is fulfilled. - http://promisesaplus.com/#point-28
+            (state == _.RESOLVED) && _triggerstack(_flat(arguments));
+            return this;
+        };
+        this.fail = function () {
+            (state == _.PENDING)  && _stack(stack, arguments, _.FAIL); // it must not be called before promise is rejected. - http://promisesaplus.com/#point-32    
+            (state == _.REJECTED) && _triggerstack(_flat(arguments));
+            return this;
+        };
+        this.progress = function () {
+            if (state == _.PENDING)  {
+                _stack(stack, arguments, _.PROGRESS);
+            }
+            else 
+                _triggerstack(_flat(arguments), u, true); 
+            return this;
+        };
         this.always = function () {
             if (state == _.PENDING) 
                 _stack(stack, arguments, _.DONE | _.FAIL)             
@@ -176,6 +188,11 @@
                 delete stack; // i don't need stack anymore
             }
             return this;                           
+        };
+        this.notify = function () {
+            progresscache = _aconv(arguments);
+            (state == _.PENDING) && _triggerstack(stack, _.PROGRESS, true); 
+            return this;
         };
         this.reject = function () { // When pending, a promise: may transition to either the fulfilled or rejected state. - http://promisesaplus.com/#point-12 
             if (state == _.PENDING) { // must not transition to any other state. - http://promisesaplus.com/#point-18                  
@@ -196,5 +213,6 @@
     RESOLVED : 2,
     REJECTED : 4,
     DONE     : 8,
-    FAIL     : 16
+    FAIL     : 16,
+    PROGRESS : 32
 }));         
