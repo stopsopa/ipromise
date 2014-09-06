@@ -62,7 +62,7 @@
             stack.push(a[i]);
         }
     };
-    function _resolve(promise, x) {  // logic from http://promisesaplus.com/#point-65      
+    function _resolve(promise, x) {  // logic from http://promisesaplus.com/#point-45    
         try {
             if (promise === x) // If promise and x refer to the same object, reject promise with a TypeError as the reason. - http://promisesaplus.com/#point-48
                 throw new TypeError('promise and x are the same object'); // If promise and x refer to the same object, reject promise with a TypeError as the reason. - http://promisesaplus.com/#point-48
