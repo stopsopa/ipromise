@@ -68,33 +68,29 @@
                 throw new TypeError('promise and x are the same object'); // If promise and x refer to the same object, reject promise with a TypeError as the reason. - http://promisesaplus.com/#point-48
 
             if (isObject(x) || isFunction(x)) {
-                    var then = x.then;
-                    if (isFunction(then)) {
-                        var call = true;
-                        try {
-                            then.call(x, function (y) {
-                                if (call) {
-                                    _resolve(promise, y);
-                                    call = false;
-                                }
-                            }, function (r) {
-                                if (call) {
-                                    promise.reject(r);
-                                    call = false;
-                                }
-                            });                         
-                        }
-                        catch (e) {
-                            call && promise.reject(e);
-                        }                    
-                    } 
-                    else {
-                        promise.resolve(x);
+                var then = x.then;
+                if (isFunction(then)) {
+                    var call = true;
+                    try {
+                        then.call(x, function (y) {
+                            if (call) {
+                                _resolve(promise, y);
+                                call = false;
+                            }
+                        }, function (r) {
+                            if (call) {
+                                promise.reject(r);
+                                call = false;
+                            }
+                        });                         
                     }
+                    catch (e) {
+                        call && promise.reject(e);
+                    }
+                }
+                else promise.resolve(x);
             }
-            else {
-                promise.resolve(x);
-            }               
+            else promise.resolve(x);                       
         }
         catch (e) {
             promise.reject(e);
@@ -123,9 +119,7 @@
                     }
                     return;
                 }
-                if (p) return fn.apply(u, progresscache); // progress mode
-                
-                fn.apply(u, argscache);
+                fn.apply(u, p ? progresscache : argscache); // normal or progress mode
             });
         };
         function _triggerstack(l, s, p) {
