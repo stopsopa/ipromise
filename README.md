@@ -78,7 +78,7 @@ if you want o to reject promise:
 promise.reject(arg1, arg2, ...)
 ```
 
-if you want o to trigger progress (trigger only before change state, after change state no more progress events are triggered)
+if you want o to trigger progress (trigger only before change state, after state is changed no more progress events are triggered)
 
 
 ```javascript
