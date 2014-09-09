@@ -3,9 +3,9 @@
 <a href="http://promises-aplus.github.com/promises-spec"><img src="https://promises-aplus.github.com/promises-spec/assets/logo-small.png" alt="Promises/A+ logo" align="right"></a>
 -->
 
-<a href="http://promisesaplus.com/" style="float: right; display: inline-block;">
+<a href="http://promisesaplus.com/" style="float: right; z-index: 2;">
     <img src="http://promisesaplus.com/assets/logo-small.png" alt="Promises/A+ logo"
-         title="Promises/A+ 1.0 compliant" align="right" style="display: inline-block;"/>
+         title="Promises/A+ 1.0 compliant" align="right"/>
 </a>
 
 
