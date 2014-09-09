@@ -15,7 +15,7 @@ Standalone, lightweight and multiplatform javascript implementatnion of
 
 ## Tests
 
-To run test install libraries from https://github.com/promises-aplus/promises-tests and run test by 
+To run test install libraries from https://github.com/promises-aplus/promises-tests and execute
 
     promises-aplus-tests test.js
 
