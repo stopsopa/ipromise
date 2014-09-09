@@ -1,14 +1,12 @@
-<!--
-
-<a href="http://promises-aplus.github.com/promises-spec"><img src="https://promises-aplus.github.com/promises-spec/assets/logo-small.png" alt="Promises/A+ logo" align="right"></a>
--->
 
 <a href="http://promisesaplus.com/">
     <img src="http://promisesaplus.com/assets/logo-small.png" alt="Promises/A+ logo"
          title="Promises/A+ 1.0 compliant" align="right"/>
 </a>
 
-<h1 align="left">ipromise.js </h1>
+---
+
+<h1>ipromise.js </h1>
 
 Standalone, lightweight and multiplatform javascript implementatnion of 
 [Promises/A+](http://promises-aplus.github.com/promises-spec) design pattern (ready to use in browser and in node.js)
