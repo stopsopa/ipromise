@@ -4,7 +4,15 @@
          title="Promises/A+ 1.0 compliant" align="right"/>
 </a>
 
----
+
+
+
+
+
+
+
+
+
 
 <h1>ipromise.js </h1>
 
