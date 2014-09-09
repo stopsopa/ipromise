@@ -8,6 +8,8 @@
          title="Promises/A+ 1.0 compliant" align="right"/>
 </a>
 </br></br>
+</br></br>
+</br></br>
 
 # ipromise.js 
 
