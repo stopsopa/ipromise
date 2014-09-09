@@ -4,13 +4,7 @@
          title="Promises/A+ 1.0 compliant" align="right"/>
 </a>
 
-<dl>
-  <dt> &nbsp;</dt>
-  <dd> &nbsp; </dd>
-
-  <dt>  &nbsp;</dt>
-  <dd> &nbsp; </dd>
-</dl>
+<dl><dt>&nbsp;</dt><dd>&nbsp;</dd></dl>
 
 
 
