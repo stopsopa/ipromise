@@ -96,36 +96,35 @@
             promise.reject(e);
         }
     };
+    function _trigger(fn, args) {
+        _tick(function () { // onFulfilled or onRejected must not be called until the execution context stack contains only platform code. [3.1]. - http://promisesaplus.com/#point-34
+            if (fn.promise) {
+                try {
+                    // If either onFulfilled or onRejected returns a value x, run the Promise Resolution Procedure [[Resolve]](promise2, x) - http://promisesaplus.com/#point-41
+                    // it must be called after promise is fulfilled, with promise’s value as its first argument. - http://promisesaplus.com/#point-27 and http://promisesaplus.com/#point-31                                                            
+                    _resolve(fn.promise, fn.apply(u, args));
+                }
+                catch (e) { // http://promisesaplus.com/#point-48                                    
+                    fn.promise.reject(e); // If either onFulfilled or onRejected throws an exception e, promise2 must be rejected with e as the reason. - http://promisesaplus.com/#point-42
+                }
+                return;
+            }
+            fn.apply(u, args); // normal or progress mode
+        });
+    };
+    function _triggerstack(l, s, args) {
+        for (var i = 0 ; i < l.length ; ++i ) 
+            (!s || (l[i].status & s)) && _trigger(l[i], args);        
+    };
     return function deferred() { 
         
         if (this.constructor != deferred) 
             return new deferred();
                     
-        var state = _.PENDING; // pending, resolved, or rejected // A promise must be in one of three states: pending, fulfilled, or rejected. - http://promisesaplus.com/#point-11
-        var argscache, // must have a value, which must not change. - http://promisesaplus.com/#point-16 / must have a reason, which must not change. - http://promisesaplus.com/#point-19
+        var state = _.PENDING, // pending, resolved, or rejected // A promise must be in one of three states: pending, fulfilled, or rejected. - http://promisesaplus.com/#point-11
+            argscache, // must have a value, which must not change. - http://promisesaplus.com/#point-16 / must have a reason, which must not change. - http://promisesaplus.com/#point-19
             progresscache,
             stack = [];
-
-        function _trigger(fn, p) {
-            _tick(function () { // onFulfilled or onRejected must not be called until the execution context stack contains only platform code. [3.1]. - http://promisesaplus.com/#point-34
-                if (fn.promise) {
-                    try {
-                        // If either onFulfilled or onRejected returns a value x, run the Promise Resolution Procedure [[Resolve]](promise2, x) - http://promisesaplus.com/#point-41
-                        // it must be called after promise is fulfilled, with promise’s value as its first argument. - http://promisesaplus.com/#point-27 and http://promisesaplus.com/#point-31                                                            
-                        _resolve(fn.promise, fn.apply(u, argscache));
-                    }
-                    catch (e) { // http://promisesaplus.com/#point-48                                    
-                        fn.promise.reject(e); // If either onFulfilled or onRejected throws an exception e, promise2 must be rejected with e as the reason. - http://promisesaplus.com/#point-42
-                    }
-                    return;
-                }
-                fn.apply(u, p ? progresscache : argscache); // normal or progress mode
-            });
-        };
-        function _triggerstack(l, s, p) {
-            for (var i = 0 ; i < l.length ; ++i ) 
-                s ? ( (l[i].status & s) && _trigger(l[i], p) ) : _trigger(l[i], p)            
-        };
         // A promise must provide a then method to access its current or eventual value or reason. - http://promisesaplus.com/#point-21
         // then may be called multiple times on the same promise. - http://promisesaplus.com/#point-36
         this.then = function (onFulfilled, onRejected) { // A promise’s then method accepts two arguments: - http://promisesaplus.com/#point-22
@@ -152,7 +151,7 @@
             if (state == _.PENDING) { // must not transition to any other state. - http://promisesaplus.com/#point-15             
                 state     = _.RESOLVED;
                 argscache = _aconv(arguments);
-                _triggerstack(stack, _.DONE);  
+                _triggerstack(stack, _.DONE, argscache);  
                 delete stack; // i don't need stack anymore
             }
             return this;                           
@@ -161,34 +160,34 @@
             if (state == _.PENDING) { // must not transition to any other state. - http://promisesaplus.com/#point-18                  
                 state     = _.REJECTED;
                 argscache = _aconv(arguments);
-                _triggerstack(stack, _.FAIL);  
+                _triggerstack(stack, _.FAIL, argscache);  
                 delete stack; // i don't need stack anymore
             }
             return this;             
         };
         this.done = function () {
             (state == _.PENDING)  && _stack(stack, arguments, _.DONE); // it must not be called before promise is fulfilled. - http://promisesaplus.com/#point-28
-            (state == _.RESOLVED) && _triggerstack(_flat(arguments));
+            (state == _.RESOLVED) && _triggerstack(_flat(arguments), u, argscache);
             return this;
         };
         this.fail = function () {
             (state == _.PENDING)  && _stack(stack, arguments, _.FAIL); // it must not be called before promise is rejected. - http://promisesaplus.com/#point-32    
-            (state == _.REJECTED) && _triggerstack(_flat(arguments));
+            (state == _.REJECTED) && _triggerstack(_flat(arguments), u, argscache);
             return this;
         };
         this.progress = function () {
             if (state == _.PENDING) _stack(stack, arguments, _.PROGRESS);
-            else                    _triggerstack(_flat(arguments), u, true); 
+            else                    _triggerstack(_flat(arguments), u, progresscache); 
             return this;
         };
         this.always = function () {
-            if (state == _.PENDING) _stack(stack, arguments, _.DONE | _.FAIL)             
-            else                    _triggerstack(_flat(arguments))
+            if (state == _.PENDING) _stack(stack, arguments, _.DONE | _.FAIL, argscache)             
+            else                    _triggerstack(_flat(arguments), u, argscache)
             return this;
         };
         this.notify = function () {
             progresscache = _aconv(arguments);
-            (state == _.PENDING) && _triggerstack(stack, _.PROGRESS, true); 
+            (state == _.PENDING) && _triggerstack(stack, _.PROGRESS, progresscache); 
             return this;
         };
         this.state = function () {
