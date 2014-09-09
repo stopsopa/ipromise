@@ -1,6 +1,12 @@
-
+<!--
 
 <a href="http://promises-aplus.github.com/promises-spec"><img src="https://promises-aplus.github.com/promises-spec/assets/logo-small.png" alt="Promises/A+ logo" align="right"></a>
+-->
+
+<a href="http://promisesaplus.com/" style="float: right;">
+    <img src="http://promisesaplus.com/assets/logo-small.png" alt="Promises/A+ logo"
+         title="Promises/A+ 1.0 compliant" align="right" />
+</a>
 
 
 # ipromise.js 
