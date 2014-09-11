@@ -74,13 +74,13 @@
                     try {
                         then.call(x, function (y) {
                             if (call) {
-                                _resolve(promise, y);
                                 call = false;
+                                _resolve(promise, y);
                             }
                         }, function (r) {
                             if (call) {
-                                promise.reject(r);
                                 call = false;
+                                promise.reject(r);
                             }
                         });                         
                     }
