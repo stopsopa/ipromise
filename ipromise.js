@@ -46,11 +46,11 @@
         return typeof a == 'function' || false;
     };  
     
-    var _tick = (function () {    
-        if (process && process.nextTick) return process.nextTick;    
-        if (setImmediate) return setImmediate;    
-        return function (fn) {setTimeout(fn, 0);}
-    }());
+    var _tick = (function(d) {
+        try{process.nextTick(d);return process.nextTick}catch(e){};
+        try{setImmediate(d);return setImmediate}catch(e){};
+        return function(f){setTimeout(f,0)};
+    })(function(){});
 
     function _flatcycle(l, a) {
         var e;
