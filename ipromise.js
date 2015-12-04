@@ -44,12 +44,12 @@
     };
     function isFunction (a) { // from underscore.js
         return typeof a == 'function' || false;
-    };   
-
+    };  
+    
     var _tick = (function () {    
-        if (process.nextTick) return process.nextTick;    
+        if (process && process.nextTick) return process.nextTick;    
         if (setImmediate) return setImmediate;    
-        return function (fn) { return setTimeout(fn, 0); }
+        return function (fn) {setTimeout(fn, 0);}
     }());
 
     function _flatcycle(l, a) {
