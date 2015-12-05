@@ -127,7 +127,8 @@
     };
     return function deferred() { 
         
-        if (this.constructor != deferred) 
+        //if (this.constructor != deferred)
+        if ( ! (this instanceof deferred) ) { 
             return new deferred();
                     
         var state = _.PENDING, // pending, resolved, or rejected // A promise must be in one of three states: pending, fulfilled, or rejected. - http://promisesaplus.com/#point-11
