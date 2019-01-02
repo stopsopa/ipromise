@@ -7,8 +7,6 @@ function green {
     printf "\e[32m$1\e[0m\n"
 }
 
-
-
 if [ "$1" = "--help" ]; then
 
 cat << EOF
@@ -21,59 +19,10 @@ EOF
     exit 0
 fi
 
-JEST=""
-
 set -e
 set -x
 
-if [ -f node_modules/.bin/jest ]; then  # exist
-
-    { green "node_modules/.bin/jest - exists"; } 2>&3
-
-    JEST="node node_modules/.bin/jest"
-else
-
-    { green "node_modules/.bin/jest - doesn't exist"; } 2>&3
-fi
-
-if [ "$JEST" = "" ]; then
-
-    { green "local jest - not found"; } 2>&3
-
-    jest -v > /dev/null
-
-    STAT="$?"
-
-    { green "(jest -v) status: $STAT"; } 2>&3
-
-    if [ "$STAT" = "0" ]; then
-
-        { green "global jest - found"; } 2>&3
-
-        JEST="jest"
-    else
-
-        { red "\n    Can't detect jest, install globally: \n   npm install jest -g\n\n"; } 2>&3
-
-        exit 1;
-    fi
-else
-
-    { green "local jest - found"; } 2>&3
-fi
-
-# --bail \
-
-TEST="$(cat <<END
-$JEST \
-$@ \
---roots test
---verbose \
---runInBand \
---modulePathIgnorePatterns test/examples test/jest test/minefield test/project test/puppeteer karma_build
-END
-)";
-
+TEST="node node_modules/.bin/promises-aplus-tests test/adapter.js"
 
 { green "\n\n    executing tests:\n        $TEST\n\n"; } 2>&3
 
