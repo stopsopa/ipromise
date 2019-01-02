@@ -28,3 +28,6 @@ ct: # travis parameters.json
 
 cp: # jest parameters.json
 	@/bin/bash update.sh --prod
+
+dev: # run also in another terminal "make c" and browser all content through this server
+	(cd docs/react && sudo yarn dev)

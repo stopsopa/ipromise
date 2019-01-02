@@ -1,2 +1,3 @@
 public/asset
+*.map
 react/servers/

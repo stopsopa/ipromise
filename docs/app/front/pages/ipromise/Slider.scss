@@ -1,0 +1,23 @@
+.slider {
+    display: inline-block;
+    border: 1px solid darkgray;
+    & > div {
+        background-color: lightgray;
+        //transition: width 2s;
+        transition-property: width;
+        transition-timing-function: linear;
+        height: 15px;
+    }
+    &.res {
+        border-color: green;
+        & > div {
+            background-color: green;
+        }
+    }
+    &.rej {
+        border-color: red;
+        & > div {
+            background-color: red;
+        }
+    }
+}

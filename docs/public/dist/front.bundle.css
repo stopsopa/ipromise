@@ -1,0 +1,19 @@
+.slider {
+  display: inline-block;
+  border: 1px solid darkgray; }
+  .slider > div {
+    background-color: lightgray;
+    transition-property: width;
+    transition-timing-function: linear;
+    height: 15px; }
+  .slider.res {
+    border-color: green; }
+    .slider.res > div {
+      background-color: green; }
+  .slider.rej {
+    border-color: red; }
+    .slider.rej > div {
+      background-color: red; }
+
+
+/*# sourceMappingURL=front.bundle.css.map*/
