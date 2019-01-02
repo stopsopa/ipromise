@@ -30,93 +30,6 @@ Standalone, lightweight and multiplatform javascript implementatnion of
 
 ***
 
-
-
-## Tests
-
-To run test install libraries from https://github.com/promises-aplus/promises-tests and execute
-
-    promises-aplus-tests test.js
-
-## Demo
-
-  [Demo](http://stopsopa.bitbucket.org/demos/ipromise/demo.html)
-
-## Api
-
-Creating an object of promise:
-
-
-```javascript
-var promise = new ipromise();
-```
-
-... or ...
-
-```javascript
-var promise = ipromise();
-```
-
-
-Api for end user:
-
-
-```javascript
-
-promise
-    .done(function(fn, fn, fn ,[fn, fn], fn, ...){
-        // action on done
-    })
-    .fail(function(fn, fn, fn ,[fn, fn], fn, ...){
-        // action on fail
-    })
-    .always(function(fn, fn, fn ,[fn, fn], fn, ...){
-        // action on done and on fail
-    })
-    .progress(function(fn, fn, fn ,[fn, fn], fn, ...){
-        // action on progress
-    });
-
-```
-
-
-Api for promise provider:
-
-if you want o to resolve promise:
-
-
-```javascript
-promise.resolve(arg1, arg2, ...)
-```
-
-
-if you want o to reject promise:
-
-
-```javascript
-promise.reject(arg1, arg2, ...)
-```
-
-if you want o to trigger progress (trigger only before change state, after state is changed no more progress events are triggered)
-
-
-```javascript
-promise.notify(arg1, arg2, ...)
-```
-
-
-
-.. and of course method "then":
-
-```javascript
-
-var promise2 = promise.then(
-    function done(arg1, arg2, ...){}, 
-    function fail(arg1, arg2, ...){}
-);
-
-```
-
 ## Thanks
 
 Thanks for e-mail consultations
@@ -125,7 +38,7 @@ Thanks for e-mail consultations
 - [kevinconway](https://github.com/kevinconway)
 
 
-### License
+## License
 
 The MIT License (MIT)
 Copyright (c) 2014 Szymon Działowski
