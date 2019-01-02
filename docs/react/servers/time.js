@@ -1,1 +1,0 @@
-module.exports = '2019-01-02_04-06-02_prod'
