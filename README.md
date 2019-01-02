@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/stopsopa/ipromise.svg?branch=v0.0.10)](https://travis-ci.org/stopsopa/ipromise)
+[![Build Status](https://travis-ci.org/stopsopa/ipromise.svg?branch=v0.0.11)](https://travis-ci.org/stopsopa/ipromise)
 [![npm version](https://badge.fury.io/js/%40stopsopa%2Fipromise.svg)](https://badge.fury.io/js/%40stopsopa%2Fipromise)
 [![NpmLicense](https://img.shields.io/npm/l/@stopsopa/ipromise.svg)](https://github.com/stopsopa/ipromise/blob/master/LICENSE)
 
