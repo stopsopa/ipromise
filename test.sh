@@ -30,6 +30,8 @@ if [ ! -e node_modules/.bin/promises-aplus-tests ]; then
     yarn
 
     make cp
+
+    git checkout yarn.lock
 fi
 
 TEST="node node_modules/.bin/promises-aplus-tests test/adapter.js"
