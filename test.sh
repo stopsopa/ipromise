@@ -1,5 +1,4 @@
 
-
 exec 3<> /dev/null
 function red {
     printf "\e[91m$1\e[0m\n"
@@ -7,20 +6,6 @@ function red {
 function green {
     printf "\e[32m$1\e[0m\n"
 }
-
-
-
-        # to make sure that ipromise is linked -
-        # it is reaquired for testing due to require('@stopsopa/ipromise') in tests
-
-        LOCVER="$(node install/install.js --is-linked)";
-
-        { green "LOCVER: >>>$LOCVER<<<"; } 2>&3
-
-        if [ ! -e node_modules ]; then
-
-            yarn
-        fi
 
         if [ ! -e node_modules/.bin/jest ]; then
 
