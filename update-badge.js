@@ -36,7 +36,9 @@ let done = 0;
 
 for (let i = 0, l = content.length ; i < l ; i += 1 ) {
 
-    if (regnpm.test(content[i]) || regcov.test(content[i])) {
+    // if (regnpm.test(content[i]) || regcov.test(content[i])) {
+
+    if (regnpm.test(content[i])) {
 
         content[i] = content[i].replace(/v\d+\.\d+\.\d+/g, n);
 
@@ -45,14 +47,15 @@ for (let i = 0, l = content.length ; i < l ; i += 1 ) {
             done += 1;
         }
 
-        if ( done === 2) {
+        if ( done === 2 ) {
 
             break;
         }
     }
 }
 
-if ( done !== 2 ) {
+// if ( done !== 2 ) {
+if ( done !== 1 ) {
 
     throw `Badges not found, invalid badges or missing badges in file '${README_md}'`;
 
