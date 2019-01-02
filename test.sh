@@ -7,11 +7,6 @@ function green {
     printf "\e[32m$1\e[0m\n"
 }
 
-        if [ ! -e node_modules/.bin/jest ]; then
-
-            yarn add jest --dev
-        fi
-
 
 
 if [ "$1" = "--help" ]; then
