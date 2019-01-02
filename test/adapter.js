@@ -2,7 +2,7 @@
 // after that run this test in node.js by
 //   promises-aplus-tests test.js
 
-var ipromise = require('./ipromise.js');
+var ipromise = require('../src/ipromise.js');
 
 var promisesAplusTests = require('promises-aplus-tests');
 

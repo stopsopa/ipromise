@@ -128,7 +128,7 @@
     return function deferred() { 
         
         //if (this.constructor != deferred)
-        if ( ! (this instanceof deferred) ) { 
+        if ( ! (this instanceof deferred) )
             return new deferred();
                     
         var state = _.PENDING, // pending, resolved, or rejected // A promise must be in one of three states: pending, fulfilled, or rejected. - http://promisesaplus.com/#point-11
@@ -161,8 +161,7 @@
             if (state == _.PENDING) { // must not transition to any other state. - http://promisesaplus.com/#point-15             
                 state     = _.RESOLVED;
                 argscache = _aconv(arguments);
-                _triggerstack(stack, _.DONE, argscache);  
-                delete stack; // i don't need stack anymore
+                _triggerstack(stack, _.DONE, argscache);
             }
             return this;                           
         };
@@ -170,8 +169,7 @@
             if (state == _.PENDING) { // must not transition to any other state. - http://promisesaplus.com/#point-18                  
                 state     = _.REJECTED;
                 argscache = _aconv(arguments);
-                _triggerstack(stack, _.FAIL, argscache);  
-                delete stack; // i don't need stack anymore
+                _triggerstack(stack, _.FAIL, argscache);
             }
             return this;             
         };

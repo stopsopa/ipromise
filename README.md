@@ -1,3 +1,8 @@
+[![Build Status](https://travis-ci.org/stopsopa/ipromise.svg?branch=v0.0.35)](https://travis-ci.org/stopsopa/ipromise)
+[![npm version](https://badge.fury.io/js/%40stopsopa%2Fipromise.svg)](https://badge.fury.io/js/%40stopsopa%2Fipromise)
+[![codecov](https://codecov.io/gh/stopsopa/ipromise/branch/v0.0.35/graph/badge.svg)](https://codecov.io/gh/stopsopa/ipromise/tree/v0.0.35)
+[![NpmLicense](https://img.shields.io/npm/l/@stopsopa/ipromise.svg)](https://github.com/stopsopa/ipromise/blob/master/LICENSE)
+
 
 <a href="http://promisesaplus.com/">
     <img src="http://promisesaplus.com/assets/logo-small.png" alt="Promises/A+ logo"

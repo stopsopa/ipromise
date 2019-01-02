@@ -1,0 +1,113 @@
+<!DOCTYPE HTML>
+<html lang="en-US" class="btspa">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+	<script>window.jQuery || document.write(unescape('%3Cscript src="//jquery.com/jquery-wp-content/themes/jquery/js/jquery-1.9.1.min.js"%3E%3C/script%3E'))</script>
+    <link rel="stylesheet" type="text/css" href="../../js/bootstrap/css/bootstrap-rewrite.css" media="all" /> 
+    <script type="text/javascript" src="ipromise.min.js"></script>
+    <style type="text/css">
+        body {
+            margin: 10px;
+        }
+        pre {
+            font-family: 'MS Reference Sans Serif',Arial,sans-serif;
+            font-size: 0.68em;
+            overflow-x: hidden;
+            overflow-y: auto;
+            max-height: 60%;
+            line-height: 1.1em;
+            padding: 4px;
+        }
+    </style>
+    
+    <script type="text/javascript">
+        $(function () {
+            (function () {
+//                window.log = function (l) {try {console.log(l)}catch(e){}};
+                var l = $('pre');
+                var i = 1;
+                window.log = function (ll) {
+                    l.prepend(i+': '+ll+"\n")
+                    ++i;
+                };
+                
+            })();
+
+            (function () {  // http://api.jquery.com/deferred.then/ g(deferred.then())              
+                var promise = ipromise();
+                var n = 100;
+                var p = $('.progress > div');
+                function progress(n) {
+                    p.css({width: n+'%'}).find('.p').html(n);
+                }
+                
+                $('.bind').click(function () {
+
+//                    var filtered = promise.then(function( value, str ) { // tutaj można przefiltrować/zmodyfikować dane wejściowe, np zdeserializować
+//                        return 'done: '+value+' - '+str;
+//                    }, function (value, str) {  // fail
+//                        return 'fail: '+value+' - '+str
+//                    }, function () {
+//                        return 'progress: ';
+//                    });
+
+                    promise
+                        .done(function( value, str ) { // deferred.done( doneCallbacks [, doneCallbacks ], ... ) //http://api.jquery.com/deferred.done/
+                            log('done: '+value+' - '+str)
+                        })
+                        .always(function ( value, str ) { // tutaj trafiają argumenty albo z resolve() albo z reject() zależy co zostanie wywołane
+                            log('always: '+value+' - '+str);
+                        })
+                        .fail(function ( value, str ) { // deferred.fail( failCallbacks [, failCallbacks ], ... ) //http://api.jquery.com/deferred.fail/
+                            log('fail: '+value+' - '+str);
+                        })
+                        .progress(function (percent) {                        
+                            log(percent+'%')
+                            progress(percent);
+                        });
+                });
+                
+                $('.reject').click(function () {
+                    promise.notify(0);
+                    promise.reject(-5, 'fail str');
+                });
+                $('.resolve').click(function () {
+                    promise.notify(100);
+                    promise.resolve(5, 'done str');
+                });
+                $('.state').click(function () {
+                    log('state: '+promise.state()); // Note that a Deferred object can be in one of three states: pending, resolved, or rejected // http://api.jquery.com/deferred.state/ // g(jquery deferred.state())
+                });
+                n *= 0.8;
+                $('.notify').click(function () {
+                    promise.notify(   parseFloat(((100 - n)+'').substring(0, 5))   ); // deferred.notifyWith( context [, args ] ) // można też tak wtedy manipulujemy this w wywołanej funkcji
+                    n *= 0.8;
+                });
+            })();
+
+
+
+        });
+    </script>
+</head>
+<body class="btspa">
+    <div>        
+        <a href="https://github.com/stopsopa/ipromise" style="float: right;" class="btn btn-link">github</a>
+        <button class="bind btn">bind</button>
+        <button class="resolve btn btn-primary">resolve</button>
+        <button class="reject btn btn-danger">reject</button>
+        <button class="notify btn">notify</button>
+        <button class="state btn">state</button>
+        <br /><br />
+        <div class="progress">
+            <div class="progress-bar" role="progressbar" style="width: 0%;">
+              <span class="sr-only"><span class="p">0</span>% Complete</span>
+            </div>
+        </div>
+
+        <pre></pre>
+    </div>
+</body>
+</html>

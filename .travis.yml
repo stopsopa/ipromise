@@ -1,0 +1,46 @@
+language: node_js
+#dist: trusty
+
+services:
+  - mysql
+
+matrix:
+  include:
+    - node_js: '8'
+      env: MODE=jest
+      dist: trusty
+    - node_js: '9'
+      env: MODE=jest
+      dist: trusty
+    - node_js: '10'
+      env: MODE=jest
+      dist: trusty
+    - node_js: '11'
+      env: MODE=jest
+      dist: trusty
+
+# https://docs.travis-ci.com/user/customizing-the-build/#safelisting-or-blocklisting-branches
+branches:
+  except:
+    - master
+
+cache: yarn
+
+env:
+  global:
+    - TRAVIS=true
+
+before_script:
+#  - yarn add "coveralls"@"^3.0.2" "jest"@"^23.6.0"
+  - sudo apt-get install tree || true
+  - tree test || true
+  - tree src || true
+
+script:
+  - /bin/bash travis.sh
+
+#after_success:
+#  - cat ./coverage/lcov.info | node node_modules/coveralls/bin/coveralls.js
+
+
+
