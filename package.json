@@ -1,5 +1,5 @@
 {
-    "version": "0.0.9",
+    "version": "0.0.10",
     "name": "@stopsopa/ipromise",
     "homepage": "https://github.com/stopsopa/ipromise",
     "main": "src/ipromise.js",
