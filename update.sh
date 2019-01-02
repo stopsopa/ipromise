@@ -105,6 +105,8 @@ DIFF="$(git diff --numstat $LOCALBRANCH $ORIGIN/$REMOTEBRANCH)"
 
 DIFF="$(trim "$DIFF")"
 
+make t
+
 if [ "$DIFF" != "" ] || [ "$1" = "force" ]; then
 
     git push $ORIGIN $REMOTEBRANCH --tags
