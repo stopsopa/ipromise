@@ -1,5 +1,5 @@
 {
-    "version": "0.0.0",
+    "version": "0.0.1",
     "name": "@stopsopa/ipromise",
     "homepage": "https://github.com/stopsopa/ipromise",
     "jest": {
@@ -14,6 +14,5 @@
             "src/**/*.js"
         ]
     },
-    "devDependencies": {
-    }
+    "devDependencies": {}
 }
