@@ -9,19 +9,7 @@ function green {
 set -e
 set -x
 
-npm link
-
-make ct
-
 yarn
-
-npm link @stopsopa/ipromise
-
-cp .env.travis .env
-
-cp migrations/ormconfig.js.dist migrations/ormconfig.js
-
-make fixtures
 
 EXECUTE="/bin/bash test.sh"
 
@@ -29,29 +17,7 @@ EXECUTE="/bin/bash test.sh"
 
 $EXECUTE
 
-ipromise
-
-cp .env.travis knex-project/.env
-
-cd knex-project
-
-OUT="$(node test.js)"
-
 STATUS="$?";
-
-if [[ "$OUT" = *"count: 5"* ]] && [[ "$OUT" = *"\"Database\": \"knex\""* ]]; then
-
-    echo 'output is good'
-else
-
-    echo 'output is NOT good'
-
-    echo "stdout: >>$OUT<<"
-
-    exit 1
-fi
-
-cd ..
 
 # cat ./coverage/lcov.info | node node_modules/coveralls/bin/coveralls.js -v | grep -v "@"
 node node_modules/.bin/codecov

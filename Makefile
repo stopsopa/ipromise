@@ -22,3 +22,9 @@ c: # run local server to browse coverage
 
 nt: # test .npmignore
 	@npm pack
+
+ct: # travis parameters.json
+	@/bin/bash update.sh --travis
+
+cp: # jest parameters.json
+	@/bin/bash update.sh --prod

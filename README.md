@@ -11,7 +11,10 @@
 
 <dl><dt>&nbsp;</dt><dd>&nbsp;</dd></dl>
 
+## Table of Contents
 
+<!-- toc -->
+<!-- tocstop -->
 
 <h1>ipromise.js </h1>
 
