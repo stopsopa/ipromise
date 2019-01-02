@@ -1,0 +1,47 @@
+// https://blog.hellojs.org/flexbox-sticky-footer-and-react-d116e4cfca5
+:root {
+    --padding: 5px;
+}
+#app {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    & > .stretch {
+        flex: 1 0 auto;
+        //padding: var(--space) var(--space) 0;
+        width: 100%;
+        & > .header {
+            border-bottom: 1px solid dimgray;
+            padding: var(--padding);
+        }
+        & > .main {
+            //padding: var(--padding);
+            display: grid;
+            grid-gap: 10px;
+            grid-template-columns: 200px 1fr;
+            grid-template-areas: "left  right";
+            background-color: #fff;
+            color: #444;
+            & > .left {
+                grid-area: left;
+                .active {
+                    color: green;
+                }
+            }
+            & > .right {
+                grid-area: right;
+            }
+        }
+    }
+    & > .stretch:after {
+        content: '\00a0';
+        display: block;
+        //margin-top: var(--space);
+        height: 0;
+        visibility: hidden;
+    }
+    footer {
+        padding: var(--padding);
+        background-color: #00c7ff;
+    }
+}

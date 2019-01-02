@@ -1,0 +1,10 @@
+#app .images-list {
+    & .date {
+        padding-right: 10px;
+    }
+    .content {
+        img {
+            border-radius: 0;
+        }
+    }
+}

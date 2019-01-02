@@ -1,0 +1,12 @@
+{
+    "NODE_PORT": "1025",
+    "NODE_HOST": "0.0.0.0",
+    "NODE_SSR_PROTOCOL": "http",
+    "NODE_SSR_HOST": "localhost",
+    "NODE_SSR_PORT": "1025",
+    "NODE_SSR_PREFIX": "/api",
+    "JWT_COOKIE_NAME": "jwt_cookie",
+    "ENV_SECURE": "true",
+    "ENV_ORIGIN": "preprocessor",
+    "NODE_ENV": "production"
+}

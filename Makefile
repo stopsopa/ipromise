@@ -17,8 +17,8 @@ tw: # run tests in watch mode
 twa: # run tests in watchAll mode
 	@/bin/bash test.sh --watchAll
 
-c: # run local server to browse coverage
-	@node server.js --log 15 --dir coverage
+c: # run local server to browse github files
+	@node server.js --log 15 --dir docs
 
 nt: # test .npmignore
 	@npm pack

@@ -81,6 +81,8 @@ trim() {
 
 make t
 
+(cd docs/roderic && yarn prod)
+
 if [ "$(git rev-parse --abbrev-ref HEAD)" != $LOCALBRANCH ]; then
 
     { red "switch first branch to <$LOCALBRANCH>"; } 2>&3

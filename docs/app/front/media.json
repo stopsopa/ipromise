@@ -1,0 +1,34 @@
+{
+    "testSquare": {
+        "width": 400,
+        "height": 400
+    },
+    "testHorizontal": {
+        "width": 800,
+        "height": 200
+    },
+    "testVertical": {
+        "width": 200,
+        "height": 800
+    },
+    "testBig": {
+        "width": 1500,
+        "height": 1000
+    },
+    "testSmall": {
+        "width": 200,
+        "height": 100
+    },
+
+
+    "supportgroups": {
+        "width": 340,
+        "height": 200
+    },
+
+
+    "materialssearch": {
+        "width": 500,
+        "height": 500
+    }
+}

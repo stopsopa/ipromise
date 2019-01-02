@@ -1,0 +1,58 @@
+html {
+    overflow-x: hidden;
+}
+
+.main-page {
+    // margin-top: 76px;
+}
+
+.g-s {
+    &.rel {
+        position: relative;
+        & > .center {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            -webkit-transform: translate(-50%, -50%);
+            -ms-transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%);
+            padding: 20px;
+        }
+    }
+
+    & > .loader {
+        h2 {
+            position: relative;
+
+            &::after {
+                content: '';
+                position: absolute;
+                bottom: -15px;
+                width: 40px;
+                height: 6px;
+                background: #c54354;
+                border-radius: 10px;
+                display: block;
+                -webkit-animation: titleBorder 2s infinite;
+                animation: titleBorder 2s infinite;   
+            }
+        }
+    }
+    & > .notfound {
+        text-align: center;
+    }
+
+
+    //border: 1px solid red;
+}
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,42 @@
+.global-loader-component {
+    z-index: 1000;
+    display: inline-block;
+    position: fixed;
+    top: 0;
+    left: 50%;
+    -webkit-transform: translate(-50%, 0);
+    -ms-transform: translate(-50%, 0);
+    transform: translate(-50%, 0);
+    height: 20px;
+    box-shadow: 0 0 5px #313131 ;
+    & > * {
+        float: left;
+    }
+    & > span {
+        //padding-left: 4px;
+
+        padding-left: 28px;
+        padding-right: 28px;
+    }
+    &.err,
+    &.msg {
+        font-weight: bold;
+        color: white;
+    }
+    &.err {
+        background-color: #db2828;
+        border-right: 40px solid #db2828;
+        border-left: 40px solid #db2828;
+    }
+    &.msg {
+        background-color: green;
+        border-right: 40px solid green;
+        border-left: 40px solid green;
+    }
+    &.load {
+        background-color: white;
+    }
+}
+body .global-loader-component .ui.loader {
+    top: 3px;
+}

@@ -1,0 +1,90 @@
+/**
+ * https://cssanimation.rocks/list-items/
+ * http://cubic-bezier.com/#.58,.24,.52,1.3
+ */
+
+body #app .react-notification,
+.react-notification { // ul
+    display: block;
+    z-index: 1000;
+    position: fixed;
+    perspective: 100px;
+    top: 5px;
+    right: 13px;
+    max-height: 90vh;
+    //border: 1px solid gray;
+    overflow: visible;
+    font-family: Lato, "Helvetica Neue", Helvetica, Arial, sans-serif;
+    & > div { // li
+        position: relative;
+        min-width: 270px;
+        background-color: #6CAF9F;
+        color: white;
+        //clear: both;
+        cursor: pointer;
+        padding: 0 2em 0 1em;
+
+        line-height: 2.8em;
+
+        height: 0;
+        margin: 0;
+
+        transform: rotateX(-90deg);
+        transform-origin: top;
+
+        float: right;
+        clear: both;
+    }
+
+    & > div,
+    & > div > div {
+        opacity: 0;
+        /* http://cubic-bezier.com/#.58,.24,.52,1.3 */
+        transition: all 0.4s cubic-bezier(.58,.24,.52,1.3);
+    }
+    & > div.show { // li
+        height: 2.8em;
+        margin: 1px 0 0 0;
+    }
+    & > div.show,
+    & > div.show > div {
+        opacity: 1;
+        transform: none;
+    }
+    & > div.show > div {
+        transition-delay: 0.28s;
+    }
+
+
+
+    & > div.hide.hide {
+        transition-delay: 0.28s;
+    }
+    & > div.hide.hide > div {
+        transition-delay: 0s;
+    }
+    & > div { // li
+        &::after {
+            content: "x";
+            position: absolute;
+            top: 0;
+            right: 14px;
+            font-weight: bold;
+            line-height: 2.8em;
+        }
+        &:hover > div {
+            //-webkit-box-shadow: 0 0 5px #727272;
+            //box-shadow: 0 0 5px #727272;
+            transform: scale(1.02, 1.02);
+        }
+
+        /* different styles, you can add your own vvv */
+        &.error {
+            background-color: #B74E69;
+        }
+        &.warning {
+            background-color: #517CE5;
+        }
+        /* different styles, you can add your own ^^^ */
+    }
+}

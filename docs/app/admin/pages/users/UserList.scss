@@ -1,0 +1,24 @@
+.users-list {
+    .roles {
+        display: grid;
+        grid-template-columns: auto auto;
+        float: right;
+        height: 28px;
+        & > span {
+            color: white;
+            font-size: 11px;
+            background-color: #E0E1E2;
+            padding: 3px 8px;
+            margin: 1px;
+            border-radius: 2px;
+            align-self: center;
+            justify-self: center;
+            &.user {
+                background-color: #5eb5e0;
+            }
+            &.admin {
+                background-color: #db2828;
+            }
+        }
+    }
+}
