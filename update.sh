@@ -81,7 +81,7 @@ trim() {
 
 make t
 
-(cd docs/roderic && yarn prod)
+(cd docs/react && yarn prod)
 
 if [ "$(git rev-parse --abbrev-ref HEAD)" != $LOCALBRANCH ]; then
 
