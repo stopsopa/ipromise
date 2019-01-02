@@ -81,8 +81,6 @@ trim() {
 
 make t
 
-(cd docs/react && yarn prod)
-
 if [ "$(git rev-parse --abbrev-ref HEAD)" != $LOCALBRANCH ]; then
 
     { red "switch first branch to <$LOCALBRANCH>"; } 2>&3
@@ -126,6 +124,8 @@ if [ "$DIFF" != "" ] || [ "$1" = "force" ]; then
     # cat comment.txt dist/spvalidation.min.js > dist/test.js
     # mv dist/test.js dist/spvalidation.min.js
 
+
+                            (cd docs/react && yarn prod)
                             node update-badge.js
                             npx markdown-toc -i README.md
                             git add README.md
