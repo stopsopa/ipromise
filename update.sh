@@ -105,6 +105,12 @@ DIFF="$(git diff --numstat $LOCALBRANCH $ORIGIN/$REMOTEBRANCH)"
 
 DIFF="$(trim "$DIFF")"
 
+
+
+make ct
+
+yarn
+
 make t
 
 if [ "$DIFF" != "" ] || [ "$1" = "force" ]; then

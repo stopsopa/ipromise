@@ -22,6 +22,16 @@ fi
 set -e
 set -x
 
+
+if [ ! -e node_modules/.bin/promises-aplus-tests ]; then
+
+    make ct
+
+    yarn
+
+    make cp
+fi
+
 TEST="node node_modules/.bin/promises-aplus-tests test/adapter.js"
 
 { green "\n\n    executing tests:\n        $TEST\n\n"; } 2>&3
