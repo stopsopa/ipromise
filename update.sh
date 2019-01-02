@@ -129,6 +129,8 @@ if [ "$DIFF" != "" ] || [ "$1" = "force" ]; then
                             node update-badge.js
                             npx markdown-toc -i README.md
                             git add README.md
+                            git add docs/public/dist/front.bundle.js
+                            git add docs/public/dist/front.bundle.css
 
                             # git add dist
                             # git add examples.es5.js
