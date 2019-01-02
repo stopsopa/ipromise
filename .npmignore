@@ -8,6 +8,7 @@
 /update-badge.sh
 /.travis.yml
 /coverage/
+/docs/
 /stopsopa-validator*
 /local.txt
 /.idea/
