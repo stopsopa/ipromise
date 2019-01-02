@@ -9,6 +9,8 @@ function green {
 set -e
 set -x
 
+make ct
+
 yarn
 
 EXECUTE="/bin/bash test.sh"
