@@ -5,7 +5,7 @@
 # DEPRECATED
 Created in 2014 - quite old now and not maintained.
 
-That was fun. To implement promise pattern myself to satisfy A+ official tests just to learn promises :).
+That was fun. To [implement](/ipromise/blob/master/src/ipromise.js) promise pattern myself to satisfy A+ official tests just to learn promises :).
 
 I wasn't smart enough though back then to reserve npm name "ipromise", and I know for sure that it was free. Well... that's a shame.
 
