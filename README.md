@@ -9,7 +9,7 @@ That was fun. To [implement](src/ipromise.js) promise pattern myself to satisfy 
 
 I wasn't smart enough though back then to reserve npm name "ipromise", and I know for sure that it was free. Well... that's a shame.
 
-I've requested owner for unpublish or owner transfer https://github.com/promises-aplus/promises-spec/pull/175 but GitHub user doesn't seem to be active anymore much.
+I've requested owner for unpublish or owner transfer https://github.com/exolution/IPromise/issues/1 but GitHub user doesn't seem to be active anymore much.
 
 <a href="http://promisesaplus.com/">
     <img src="http://promisesaplus.com/assets/logo-small.png" alt="Promises/A+ logo"
